@@ -2,8 +2,10 @@ import pygame
 from settings import BLACK, WHITE, RED, BLUE, GREEN, WIDTH, HEIGHT, screen, clock, FPS, font
 from dll.striker import Striker
 from dll.ball import Ball
+import time
 def main():
     running = True
+    pause = False
  
     # Определение обьектов
     player1 = Striker(20, 0, 10, 100, 10, RED)
@@ -17,8 +19,10 @@ def main():
     player1YFac, player2YFac = 0, 0
  
     while running:
+        bg = pygame.image.load("meta/table.jpg")
         screen.fill(BLACK)
- 
+        screen.blit(bg, (0, 0))
+
         # Обработчик евентов
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -54,13 +58,32 @@ def main():
         elif point == 1:
             player2Score += 1
 
-        if player1Score >= 0 or player2Score >= 15:
-            clock.tick(0)
-            text = font.render('GAME OVER', True, GREEN)
-            textRect = text.get_rect()
-            textRect.center(WIDTH, HEIGHT)
-            screen.blit(text, textRect)
-            running = False
+        if player1Score >= 1 or player2Score >= 15:
+            pause = True
+            while pause:
+                if player1Score >= 1:
+                    text1 = font.render('Победитель: Игрок 1!', True, GREEN)
+                if player2Score >= 15:
+                    text1 = font.render('Победитель: Игрок 2!', True, GREEN)
+                
+                # Текст
+                text2 = font.render('Спасибо за игру! Автор: KITE-DEV.', True, GREEN)
+                textRect1 = text1.get_rect(center = (WIDTH/2, HEIGHT/2))
+                textRect2 = text2.get_rect(center = (WIDTH/2, HEIGHT/2+50))
+                screen.fill(BLACK) # меняем фон
+                screen.blit(text1, textRect1)
+                screen.blit(text2, textRect2)
+
+                # принимаем и обновляем игру для перезапуска
+                pygame.display.flip()
+                time.sleep(1)
+                ball.reset()
+                player1Score, player2Score = 0, 0
+                player1YFac, player2YFac = 0, 0
+                time.sleep(3)
+                pause = False # рестарт
+
+            
 
         # респавн мяча
         if point:  
