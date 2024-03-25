@@ -61,7 +61,7 @@ def main():
         if player1Score >= 1 or player2Score >= 15:
             pause = True
             while pause:
-                if player1Score >= 1:
+                if player1Score >= 15:
                     text1 = font.render('Победитель: Игрок 1!', True, GREEN)
                 if player2Score >= 15:
                     text1 = font.render('Победитель: Игрок 2!', True, GREEN)
